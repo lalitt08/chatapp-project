@@ -1,0 +1,61 @@
+name: Backend CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, Linux, X64]
+    
+    env:
+      TARGET_SERVER: "ubuntu@10.0.3.92"  
+      APP_DIR: "/Django_Chatapp"            
+      VENV_DIR: "/Django_Chatapp/venv"     
+      APP_SUBDIR: "fundoo"              
+
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+     
+      - name: Sync application code to backend server
+        run: |
+          echo "Syncing application code to $TARGET_SERVER..."
+          rsync -avz --exclude '.git' ./ $TARGET_SERVER:$APP_DIR
+
+   
+      - name: Build and deploy application
+        run: |
+          echo "Building and deploying application on $TARGET_SERVER..."
+          ssh $TARGET_SERVER << EOF
+              set -e
+              source ~/.bashrc
+              echo "Changing to application directory: $APP_DIR..."
+              cd $APP_DIR
+
+              echo "Activating virtual environment in $VENV_DIR..."
+              source $VENV_DIR/bin/activate
+
+              echo "Installing dependencies from requirements.txt..."
+              pip install -r requirements.txt
+
+              echo "Navigating to application subdirectory: $APP_SUBDIR..."
+              cd $APP_SUBDIR
+
+              echo "Running database migrations..."
+              python manage.py migrate
+
+              echo "Restarting Django service..."
+              sudo systemctl restart django-backend
+
+              echo "Checking service status..."
+              sudo systemctl status django-backend
+          EOF
+
+      - name: Notify success
+        run: echo "CI/CD pipeline completed successfully!"
+
+      - name: Notify failure
+        if: failure()
+        run: echo "CI/CD pipeline failed!"
