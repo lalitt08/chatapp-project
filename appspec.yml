@@ -9,8 +9,9 @@ hooks:
       timeout: 300
       runas: ubuntu
   AfterInstall:
-    - location: scripts/clean_old_files.sh  # NEW: This will delete old files before deployment
+    - location: scripts/clean_directory.sh
       timeout: 300
+      runas: root
     - location: scripts/after_install.sh
       timeout: 300
       runas: ubuntu
