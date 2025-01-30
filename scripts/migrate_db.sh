@@ -1,7 +1,6 @@
 #!/bin/bash
-echo "Running migrations..."
-source .\bashrc
 cd /Django_Chatapp
 source venv/bin/activate
-cd /Django_chatapp/fundoo
+cd fundoo
 python manage.py migrate
+sudo systemctl start django-backend
