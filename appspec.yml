@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /  # Root of your GitHub repository
-    destination: /Django_Chatapp  # Directly updating your existing app folder
+  - source: /  # This is the root of your GitHub repo
+    destination: /Django_Chatapp  # This is where your app is already running
 
 permissions:
   - object: /Django_Chatapp
