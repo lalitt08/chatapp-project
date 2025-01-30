@@ -5,20 +5,22 @@ phases:
     commands:
       - echo "Updating package lists and installing dependencies..."
       - apt-get update -y
-      - apt-get install -y git python3-venv python3-pip zip  # Added 'zip' to package installation
+      - apt-get install -y git python3-venv python3-pip zip
 
+  pre_build:
+    commands:
       - echo "Cloning the repository..."
-      - git clone https://github.com/lalitt08/django-chatapp.git
-
-      - cd django-chatapp
+      - git clone https://github.com/lalitt08/chatapp-project.git /Django_Chatapp
+      - cd /Django_Chatapp
 
       - echo "Creating virtual environment..."
       - python3 -m venv venv
 
       - echo "Activating virtual environment..."
-      - . venv/bin/activate  # Using '.' instead of 'source' for compatibility
+      - . venv/bin/activate
 
       - echo "Installing requirements..."
+      - pip install --upgrade pip
       - pip install -r requirements.txt
 
   build:
@@ -29,12 +31,15 @@ phases:
     commands:
       - echo "Packaging application into a ZIP file..."
       - cd ..
-      - echo "Listing contents before zipping..."
-      - ls -la django-chatapp  # Verify the directory exists and its contents
+      - zip -r chatapp-build.zip Django_Chatapp
 
+      - echo "Listing contents before zipping..."
+      - ls -la Django_Chatapp  # Verify contents before zipping
 
 artifacts:
   files:
     - appspec.yml
     - chatapp-build.zip
+    - Django_Chatapp/scripts/*
+    - Django_Chatapp/*
   discard-paths: no
