@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Running migrations..."
 source .\bashrc
-cd /home/ubuntu/django_chatapp
+cd /Django_Chatapp
 source venv/bin/activate
 python manage.py migrate
