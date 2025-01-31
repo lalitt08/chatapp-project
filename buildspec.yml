@@ -41,5 +41,4 @@ artifacts:
     - appspec.yml
     - chatapp-build.zip
     - Django_Chatapp/scripts/*
-    - Django_Chatapp/*
   discard-paths: no
