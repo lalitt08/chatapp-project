@@ -40,5 +40,4 @@ artifacts:
   files:
     - '**/*'
   name: chatapp-build.zip
-  base-directory: Django_Chatapp
   discard-paths: no
